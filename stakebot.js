@@ -4,6 +4,7 @@ const path = require("node:path");
 const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
 require("dotenv/config");
 const mongoConnect = require("./utilities/mongo-connect");
+require('./utilities/Staking.js');
 
 // Declare needed Intents
 const client = new Client({

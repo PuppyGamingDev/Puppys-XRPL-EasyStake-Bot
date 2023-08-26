@@ -21,6 +21,7 @@
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "mongoose": "^7.4.5",
+    "node-schedule": "^2.1.1",
     "xrpl": "^2.11.0",
     "xumm-sdk": "^1.8.7"
   }

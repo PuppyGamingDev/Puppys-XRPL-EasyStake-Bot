@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
-const { addUserWallet } = require('../utilities/Storage');
+const userSchema = require('../schemas/userSchema');
 const { getXUMM } = require('../utilities/Connections');
 
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
 			const sender = result.response.account;
 			// Confirm with user and add to Users Map
 			await interaction.editReply({ content: `Linked with wallet **${sender}**`, embeds: [], ephemeral: true });
-			await addUserWallet(interaction.user.id, sender);
+			await userSchema.findOneAndUpdate({ _id: interaction.user.id }, { wallet: sender }, { upsert: true });
 			return;
 		}
 		catch (err) {
