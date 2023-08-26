@@ -39,5 +39,18 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply({ ephemeral: true });
 
+		switch (interaction.options.getSubcommand()) {
+			case 'add': {
+
+			}
+
+			case 'remove': {
+
+			}
+
+			case 'view': {
+
+			}
+		}
 	},
 };
