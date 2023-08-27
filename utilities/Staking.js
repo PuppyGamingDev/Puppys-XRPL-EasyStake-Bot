@@ -45,9 +45,10 @@ const snapshots = async () => {
 			const nfts = response.data.data;
 			// Iterate over NFTs returned and reward holder (if user has linked) with the amount set per NFT for that collection
 			for (const nft of nfts) {
-				if (Users.get(nft.Owner) === undefined) continue;
-				if (!guild.rewards[nft.Owner]) guild.rewards[nft.owner] = collection.pernft;
-				else guild.rewards[nft.Owner] += collection.pernft;
+				const user = Users.get(nft.Owner);
+				if (user === undefined) continue;
+				if (!guild.rewards[user]) guild.rewards[user] = collection.pernft;
+				else guild.rewards[user] += collection.pernft;
 			}
 		}
 		// Save guild with updated rewards
