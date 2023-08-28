@@ -7,13 +7,13 @@ const xrpl = require('xrpl');
 const xumm = new XummSdk(process.env.XUMMKEY, process.env.XUMMSECRET);
 
 const getXUMM = () => {
-	return xumm;
+    return xumm;
 };
 
 const getXRPClient = async () => {
-	const XRPLclient = new xrpl.Client(process.env.NETWORK);
-	await XRPLclient.connect();
-	return XRPLclient;
+    const XRPLclient = new xrpl.Client(process.env.NETWORK);
+    await XRPLclient.connect();
+    return XRPLclient;
 };
 
 const claim = async (address, amount, currency) => {
@@ -32,10 +32,10 @@ const claim = async (address, amount, currency) => {
         ]
     })
     prepared["Amount"] = currency.name === "XRP" ?
-        xrpl.xrpToDrops(winnings.toFixed(6)) :
+        xrpl.xrpToDrops(amount.toFixed(6)) :
         {
             "currency": currency.hex,
-            "value": winnings.toFixed(6).toString(),
+            "value": amount.toFixed(6).toString(),
             "issuer": currency.issuer
         }
     const signed = wallet.sign(prepared)
