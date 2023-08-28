@@ -66,6 +66,14 @@ module.exports = {
 					await interaction.editReply({ content: `Sorry but the project hasn't set up their token details yet.` });
 					return;
 				}
+				const timenow = Math.floor(Date.now() / 1000);
+				var cooled = cooldowns.get(interaction.user.id);
+				if (cooled !== undefined && cooled > timenow) {
+					await interaction.editReply({ content: `Sorry but you are still on Cooldown for claiming.\nClaim Again: <t:${cooled}:R>` });
+					return;
+				}
+				const cooldown = timenow + 120;
+				cooldowns.set(interaction.user.id, cooldown)
 				try {
 					const txhash = await claim(user.wallet, myRewards, guild.currency);
 					if (!txhash || txhash === undefined) {
@@ -75,11 +83,11 @@ module.exports = {
 					guild.rewards[interaction.user.id] = 0;
 					await guild.save();
 					await interaction.editReply({ content: `You have successfully claimed your rewards. You can view your transaction here: https://xrpscan.com/tx/${txhash}` });
-					return;
 				} catch (error) {
 					await interaction.editReply({ content: `There was an error claiming your rewards. Make sure you have a Trustline set and if continues, please contact a member of the team` });
-					return;
 				}
+				setTimeout(() => cooldowns.delete(interaction.user.id), 120000);
+				return;
 			}
 		}
 	},
