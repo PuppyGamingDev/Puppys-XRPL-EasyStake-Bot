@@ -1,4 +1,4 @@
-/* eslint-disable no-inline-comments */
+// Main file for running the Discord Bot
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
@@ -21,8 +21,6 @@ for (const file of commandFiles) {
     client.commands.set(command.data.name, command);
 }
 
-client.cooldowns = new Collection();
-
 // Runs when bot logs in
 client.once(Events.ClientReady, async () => {
     // Initiate MongoDB connection first
@@ -30,27 +28,8 @@ client.once(Events.ClientReady, async () => {
     console.log(`Puppy's EasyStake Bot is running`);
 });
 
-// Command Handling
+// Slash Command Handling
 client.on(Events.InteractionCreate, async (interaction) => {
-    const { cooldowns } = client;
-    const command = interaction.client.commands.get(interaction.commandName);
-
-    if (!cooldowns.has(command.data.name)) {
-        cooldowns.set(command.data.name, new Collection());
-    }
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.data.name);
-    const defaultCooldownDuration = 10;
-    const cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
-
-    if (timestamps.has(interaction.user.id)) {
-        const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-            const expiredTimestamp = Math.round(expirationTime / 1000);
-            return interaction.reply({ content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`, ephemeral: true });
-        }
-    }
     // Handle Slash Commands
     if (interaction.isChatInputCommand()) {
         const command = interaction.client.commands.get(interaction.commandName);

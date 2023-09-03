@@ -1,3 +1,4 @@
+// Slash Command to handle setting the server's Reward Currency details
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const guildSchema = require('../schemas/guildSchema');
 const mongoConnect = require('../utilities/mongo-connect');
@@ -28,10 +29,15 @@ module.exports = {
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
     async execute(interaction) {
+        // Defer reply to prevent timeout
         await interaction.deferReply({ ephemeral: true });
 
+        // Handle subcommands (View or Set)
         switch (interaction.options.getSubcommand()) {
+
+            // Handle view
             case 'view': {
+                // Connect to MongoDB and get Server's data
                 await mongoConnect();
                 const guild = await guildSchema.findOne({ _id: interaction.guild.id });
                 if (!guild || guild === undefined || !guild.currency || guild.currency === undefined) {
@@ -44,15 +50,22 @@ module.exports = {
                 return;
             }
 
+            // Handle set
             case 'set': {
+
+                // Get the Currency details from the interaction options
                 const name = interaction.options.getString('name');
                 const issuer = interaction.options.getString('issuer');
                 const code = interaction.options.getString('code');
+
+                // Set values in an Object
                 const newCurrency = {
                     name: name,
                     issuer: issuer,
                     code: code
                 }
+
+                // Connect to MongoDB and update the Server's value for currency
                 await mongoConnect();
                 await guildSchema.findOneAndUpdate(
                     { _id: interaction.guild.id },

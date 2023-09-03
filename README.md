@@ -1,5 +1,12 @@
 # Puppys-XRPL-EasyStake-Bot
 
+## Introduction & Information
+This is a Discord Bot that allows you to easily distribute rewards to users for holding your XRPL NFTs. It uses the XUMM SignIn process to allow users to register their wallet address with the bot and every midnight the bot will use the [xrpl.services](https://api.xrpldata.com/docs/static/index.html) API to get the current Holders. It will iterate over the holders and each time it finds a Holder address that is linked to a Discord User it will add a reward to the user value in the database based on the reward set for that collection. 
+
+This supports the ability for multiple collections and each one can have it's own Reward Per NFT so one collection could grant more than another. You can also set the currency used for rewards. You can use XRP or an XRPL Token.
+
+User rewards are stored in the database and can be redeemed by users at any time. This avoids the bot having to send out multiple transactions every time it does a daily snapshot reducing transaction costs and unnecessary network traffic. Rewards are also stored against a user's Discord ID and not their Wallet Address so they are able to link a different wallet and still keep their old rewards count.
+
 ## Setup
 `npm install` or `npm i discord.js mongoose dotenv axios xumm-sdk xrpl`
 
@@ -40,9 +47,11 @@ Users can use this command in a server to view their current rewards for that pr
 Projects use this to add / remove & view their set collections.
 
 ### /currency (Admin only default)
-Projects use this to set their token of choice to use for staking rewards.
+Projects use this to set their token of choice to use for staking rewards. *(When setting an XRPL Token, if your Token has a HEX Currency Code, make sure to use this as the Currency Code or it will fail to send transactions.)*
 
-## Finishing up
+## Finishing 
+Anyone is free to use and modify this code as they wish, no credits required but are appreciated.
+
 If you have any questions, my DMs are always open on
 
 - Twitter > @iamshiffed

@@ -1,3 +1,4 @@
+// Database Schema for the Discord Server's settings
 const mongoose = require('mongoose');
 
 const guildSchema = new mongoose.Schema({

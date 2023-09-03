@@ -1,4 +1,4 @@
-// Initial requirements and variables
+// Script used to register Slash Commands to the Discord API
 const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');

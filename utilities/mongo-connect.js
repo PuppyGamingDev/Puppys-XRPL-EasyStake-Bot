@@ -1,3 +1,4 @@
+// Connectiong to MongoDB and return current connection if already exists.
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 

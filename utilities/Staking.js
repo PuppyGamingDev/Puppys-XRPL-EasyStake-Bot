@@ -1,6 +1,6 @@
+// Staking script respoinsible for taking a snapshot of holders and rewarding them based on their holdings
 const guildSchema = require('../schemas/guildSchema.js');
 const userSchema = require('../schemas/userSchema.js');
-const { getXRPClient } = require('./Connections.js');
 const mongoConnect = require('./mongo-connect.js');
 const schedule = require('node-schedule');
 const axios = require('axios');
