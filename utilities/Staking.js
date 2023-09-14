@@ -41,11 +41,25 @@ const snapshots = async () => {
         if (!collections || collections.length < 1) continue;
         for (const collection of collections) {
             // Axios request to xrpl.services API for holder snapshot
-            const response = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`)
+            const response = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`);
+            
             if (!response.data.data || response.data.data.nfts.length < 1) continue;
             const nfts = response.data.data.nfts;
+            const offerResponse = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}/taxon/${collection.taxon}`);
+            var selling = [];
+            const offers = response.data.data.offers;
+            for (const offer of offers) {
+                owner = offer.NFTokenOwner;
+                for (const sell of offer.sell) {
+                    if (sell.Owner === owner) {
+                        selling.push(sell.NFTokenID);
+                        break;
+                    }
+                }
+            }
             // Iterate over NFTs returned and reward holder (if user has linked) with the amount set per NFT for that collection
             for (const nft of nfts) {
+                if (selling.includes(nft.NFTokenID)) continue;
                 const user = Users.get(nft.Owner);
                 if (user === undefined) continue;
                 if (!rewards[user]) rewards[user] = collection.pernft;
