@@ -49,6 +49,9 @@ Projects use this to add / remove & view their set collections.
 ### /currency (Admin only default)
 Projects use this to set their token of choice to use for staking rewards. *(When setting an XRPL Token, if your Token has a HEX Currency Code, make sure to use this as the Currency Code or it will fail to send transactions.)*
 
+### /supply (Admin only default)
+Projects use this to view, set and add to their total staking supply so they can cap tota rewards available via staking
+
 ## Finishing 
 Anyone is free to use and modify this code as they wish, no credits required but are appreciated.
 

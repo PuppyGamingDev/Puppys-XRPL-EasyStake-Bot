@@ -88,7 +88,6 @@ module.exports = {
 
                 // Get the Servers preferences
                 const guild = await guildSchema.findOne({ _id: interaction.guild.id });
-                if (!guild) return await interaction.editReply({ content: `Sorery but I couldn't find your server's details` });
 
                 // Check if a total has already been set and suggest the add command
                 if (guild.totalsupply === 0) return await interaction.editReply({ content: `Sorry but you havn't set an initial total supply before, please use \`/supply set\` to set the initial amount.` });
