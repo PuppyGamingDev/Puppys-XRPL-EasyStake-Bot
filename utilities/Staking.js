@@ -44,12 +44,12 @@ const snapshots = async () => {
         for (const collection of collections) {
             // Axios request to xrpl.services API for holder snapshot
             const response = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`);
-            
+
             if (!response.data.data || response.data.data.nfts.length < 1) continue;
             const nfts = response.data.data.nfts;
             const offerResponse = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}/taxon/${collection.taxon}`);
             var selling = [];
-            const offers = response.data.data.offers;
+            const offers = offerResponse.data.data.offers;
             for (const offer of offers) {
                 owner = offer.NFTokenOwner;
                 for (const sell of offer.sell) {
