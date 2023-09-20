@@ -76,7 +76,7 @@ module.exports = {
                 // Connect to MongoDB and update the Server's total supply for staking
                 await guildSchema.findOneAndUpdate(
                     { _id: interaction.guild.id },
-                    { totalsupply: supply },
+                    { totalsupply: supply, currentsupply: supply },
                     { upsert: true }
                 )
                 await interaction.editReply({ content: `Your total Staking Supply has been set to **${supply.toLocaleString()}**\nTo increase reward supply, please use \`/supply add\`` });

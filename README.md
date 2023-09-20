@@ -1,5 +1,7 @@
 # Puppys-XRPL-EasyStake-Bot
 
+> You can access an easier to read guide created on GitBook here https://puppy-tools.gitbook.io/xrpl-easystake/
+
 ## Introduction & Information
 This is a Discord Bot that allows you to easily distribute rewards to users for holding your XRPL NFTs. It uses the XUMM SignIn process to allow users to register their wallet address with the bot and every midnight the bot will use the [xrpl.services](https://api.xrpldata.com/docs/static/index.html) API to get the current Holders. It will iterate over the holders and each time it finds a Holder address that is linked to a Discord User it will add a reward to the user value in the database based on the reward set for that collection. 
 
