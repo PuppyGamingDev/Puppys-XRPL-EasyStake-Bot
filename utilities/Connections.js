@@ -41,7 +41,7 @@ const claim = async (address, amount, currency) => {
     prepared["Amount"] = currency.name === "XRP" ?
         xrpl.xrpToDrops(amount.toFixed(6)) :
         {
-            "currency": currency.hex,
+            "currency": currency.code,
             "value": amount.toFixed(6).toString(),
             "issuer": currency.issuer
         }
