@@ -19,13 +19,13 @@ module.exports = {
                 .setDescription('The issuer of the collection.')
                 .setRequired(true))
             .addIntegerOption(option => option
-                .setName('taxon')
-                .setDescription('The taxon of the collection. (If multiple taxons, dont include e.g. Sologenic collections)')
-                .setRequired(false))
-            .addIntegerOption(option => option
                 .setName('reward')
                 .setDescription('The reward per NFT per day of the collection.')
-                .setRequired(true)))
+                .setRequired(true))
+            .addIntegerOption(option => option
+                .setName('taxon')
+                .setDescription('The taxon of the collection. (If multiple taxons, dont include e.g. Sologenic collections)')
+                .setRequired(false)))
         .addSubcommand(subcommand => subcommand
             .setName('remove')
             .setDescription('Remove a collection from your Project.')
