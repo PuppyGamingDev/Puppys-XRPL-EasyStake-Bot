@@ -20,8 +20,8 @@ module.exports = {
                 .setRequired(true))
             .addIntegerOption(option => option
                 .setName('taxon')
-                .setDescription('The taxon of the collection.')
-                .setRequired(true))
+                .setDescription('The taxon of the collection. (If multiple taxons, dont include e.g. Sologenic collections)')
+                .setRequired(false))
             .addIntegerOption(option => option
                 .setName('reward')
                 .setDescription('The reward per NFT per day of the collection.')
@@ -50,8 +50,10 @@ module.exports = {
                 // Get the collection details from the interaction options
                 const name = interaction.options.getString('name');
                 const issuer = interaction.options.getString('issuer');
-                const taxon = interaction.options.getInteger('taxon');
+                var taxon = interaction.options.getInteger('taxon');
                 const reward = interaction.options.getInteger('reward');
+
+                if (!taxon || taxon === undefined) taxon = "none";
 
                 // Create the collection object
                 const newCollection = {

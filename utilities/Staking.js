@@ -43,7 +43,13 @@ const snapshots = async () => {
         if (!collections || collections.length < 1) continue;
         for (const collection of collections) {
             // Axios request to xrpl.services API for holder snapshot
-            const response = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`);
+            var url = "";
+            if (collection.taxon === "none") {
+                url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}`
+            } else {
+                url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`
+            }
+            const response = await axios.get(url);
 
             if (!response.data.data || response.data.data.nfts.length < 1) continue;
             const nfts = response.data.data.nfts;
