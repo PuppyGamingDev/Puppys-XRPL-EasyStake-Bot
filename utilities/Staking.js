@@ -4,6 +4,7 @@ const userSchema = require('../schemas/userSchema.js');
 const mongoConnect = require('./mongo-connect.js');
 const schedule = require('node-schedule');
 const axios = require('axios');
+const wait = require('node:timers/promises').setTimeout
 
 const Users = new Map();
 
@@ -44,16 +45,19 @@ const snapshots = async () => {
         for (const collection of collections) {
             // Axios request to xrpl.services API for holder snapshot
             var url = "";
+            const offerURL = ""
             if (collection.taxon === "none") {
-                url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}`
+                url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}`;
+                offerURL = `https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}`
             } else {
                 url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}/taxon/${collection.taxon}`
+                offerURL = `https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}/taxon/${collection.taxon}`
             }
             const response = await axios.get(url);
 
             if (!response.data.data || response.data.data.nfts.length < 1) continue;
             const nfts = response.data.data.nfts;
-            const offerResponse = await axios.get(`https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}/taxon/${collection.taxon}`);
+            const offerResponse = await axios.get(offerURL);
             var selling = [];
             const offers = offerResponse.data.data.offers;
             for (const offer of offers) {
@@ -75,6 +79,7 @@ const snapshots = async () => {
                 else rewards[user] += collection.pernft;
                 rewardsleft -= collection.pernft;
             }
+            await wait(15000);
         }
         // Save guild with updated rewards
         await guildSchema.findOneAndUpdate(
