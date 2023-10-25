@@ -53,7 +53,7 @@ module.exports = {
                 var taxon = interaction.options.getInteger('taxon');
                 const reward = interaction.options.getInteger('reward');
 
-                if (!taxon || taxon === undefined) taxon = "none";
+                if (taxon === null || typeof taxon === 'undefined') taxon = "none";
 
                 // Create the collection object
                 const newCollection = {
