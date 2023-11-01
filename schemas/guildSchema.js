@@ -20,6 +20,9 @@ const guildSchema = new mongoose.Schema({
     currency: {
         type: mongoose.SchemaTypes.Mixed,
     },
+    modifiers: {
+        type: mongoose.SchemaTypes.Mixed,
+    },
     totalsupply: {
         type: mongoose.SchemaTypes.Number,
         required: true,

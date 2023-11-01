@@ -37,6 +37,7 @@ const snapshots = async () => {
     const guilds = await guildSchema.find();
     if (!guilds || guilds.length < 1) return;
     for (const guild of guilds) {
+        const modifiers = guild.modifiers ? guild.modifiers : {};
         if (guild.currentsupply === 0) continue;
         var rewardsleft = guild.currentsupply;
         var rewards = guild.rewards;
@@ -74,10 +75,17 @@ const snapshots = async () => {
                 if (selling.includes(nft.NFTokenID)) continue;
                 const user = Users.get(nft.Owner);
                 if (user === undefined) continue;
-                if (rewardsleft < collection.pernft) break;
-                if (!rewards[user]) rewards[user] = collection.pernft;
-                else rewards[user] += collection.pernft;
-                rewardsleft -= collection.pernft;
+                // Check modifier for NFT and if none then use standard amount
+                const thisreward = modifiers[nft.NFTokenID] ? modifiers[nft.NFTokenID].modifier * collection.pernft : collection.pernft;
+                if (rewardsleft < thisreward) {
+                    if (!rewards[user]) rewards[user] = rewardsleft;
+                    else rewards[user] += rewardsleft;
+                    rewardsleft = 0;
+                    break;
+                }
+                if (!rewards[user]) rewards[user] = thisreward;
+                else rewards[user] += thisreward;
+                rewardsleft -= thisreward;
             }
             await wait(15000);
         }
