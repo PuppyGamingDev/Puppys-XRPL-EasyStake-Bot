@@ -46,7 +46,7 @@ const snapshots = async () => {
         for (const collection of collections) {
             // Axios request to xrpl.services API for holder snapshot
             var url = "";
-            const offerURL = ""
+            var offerURL = ""
             if (collection.taxon === "none") {
                 url = `https://api.xrpldata.com/api/v1/xls20-nfts/issuer/${collection.issuer}`;
                 offerURL = `https://api.xrpldata.com/api/v1/xls20-nfts/offers/issuer/${collection.issuer}`
