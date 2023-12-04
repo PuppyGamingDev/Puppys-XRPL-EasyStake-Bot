@@ -26,7 +26,7 @@ SEED=
 
 - `TOKEN` and `CLIENTID` are your Bot Token and Client ID from Discord Application > [GUIDE HERE](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)
 - `MONGOURI` is a MongoDB Connection String > [GUIDE HERE](https://www.mongodb.com/docs/guides/atlas/connection-string/)
-- `XUMMKEY` and `XUMMSECRET` require you to create an application with XUMM and get the values > [GUIDE HERE](https://xumm.readme.io/docs/register-your-app)
+- `XUMMKEY` and `XUMMSECRET` require you to create an application with XUMM and get the values > [XUMM Dev Console]([https://xumm.readme.io/docs/register-your-app](https://apps.xumm.dev/))
 - `NETWORK` is the XRPL Network. You can use a public one such as `wss://s1.ripple.com/` but I advise a private one, You can get one free from [QuickNode](https://www.quicknode.com?tap_a=67226-09396e&tap_s=3536451-d11bb1&utm_source=affiliate&utm_campaign=generic&utm_content=affiliate_landing_page&utm_medium=generic)
 - `SEED` is the Family Seed of the wallet you are using to distribute rewards. (Recommend to only keep the tokens in this wallet for rewards and a small amount of XRP for transactions)
 
