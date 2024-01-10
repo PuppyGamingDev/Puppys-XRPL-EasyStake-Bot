@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const userSchema = require('../schemas/userSchema');
 const guildSchema = require('../schemas/guildSchema');
 const mongoConnect = require('../utilities/mongo-connect');
-const { claim } = require('../utilities/Connections');
+const { claim, checkTrustline } = require('../utilities/Connections');
 
 // Cooldown manager to mitigate spam claiming
 const cooldowns = new Map();
@@ -90,7 +90,10 @@ module.exports = {
                     await interaction.editReply({ content: `Sorry but the project hasn't set up their token details yet.` });
                     return;
                 }
-
+                // Check trustline
+                const token = { hex: guild.currency.code }
+                if (!checkTrustline(myRewards, user.wallet, token)) return await interaction.editReply({ content: `Sorry but you dont seem to have a trustline set`});
+                
                 // Check if user is on cooldown to prevent spam claiming (2 minute cooldown)
                 const timenow = Math.floor(Date.now() / 1000);
                 var cooled = cooldowns.get(interaction.user.id);
