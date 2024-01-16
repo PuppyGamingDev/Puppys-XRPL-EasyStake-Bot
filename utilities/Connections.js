@@ -68,4 +68,4 @@ const checkTrustline = async (amount, wallet, token) => {
       return false
 }
 
-module.exports = { getXUMM, getXRPClient, claim };
+module.exports = { getXUMM, getXRPClient, claim, checkTrustline };
