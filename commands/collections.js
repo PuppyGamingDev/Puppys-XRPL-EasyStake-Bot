@@ -18,7 +18,7 @@ module.exports = {
                 .setName('issuer')
                 .setDescription('The issuer of the collection.')
                 .setRequired(true))
-            .addIntegerOption(option => option
+            .addNumberOption(option => option
                 .setName('reward')
                 .setDescription('The reward per NFT per day of the collection.')
                 .setRequired(true))
@@ -51,7 +51,7 @@ module.exports = {
                 const name = interaction.options.getString('name');
                 const issuer = interaction.options.getString('issuer');
                 var taxon = interaction.options.getInteger('taxon');
-                const reward = interaction.options.getInteger('reward');
+                const reward = interaction.options.getNumber('reward');
 
                 if (taxon === null || typeof taxon === 'undefined') taxon = "none";
 
