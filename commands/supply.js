@@ -14,14 +14,14 @@ module.exports = {
         .addSubcommand(subcommand => subcommand
             .setName('set')
             .setDescription('Set your Total Staking Supply (This can be done once, then use /supply add)')
-            .addIntegerOption(option => option
+            .addNumberOption(option => option
                 .setName('total')
                 .setDescription('The total supply to set for Staking rewards')
                 .setRequired(true)))
         .addSubcommand(subcommand => subcommand
             .setName('add')
             .setDescription('Add to your Total Staking Supply if you have already set an initial total')
-            .addIntegerOption(option => option
+            .addNumberOption(option => option
                 .setName('amount')
                 .setDescription('The supply to add for Staking rewards')
                 .setRequired(true)))
@@ -71,7 +71,7 @@ module.exports = {
                 if (guild.totalsupply > 0) return await interaction.editReply({ content: `Sorry but you have already set an initial total supply, please use \`/supply add\` to add to it.` });
 
                 // Get the Currency details from the interaction options
-                const supply = interaction.options.getInteger('total');
+                const supply = interaction.options.getNumber('total');
 
                 // Connect to MongoDB and update the Server's total supply for staking
                 await guildSchema.findOneAndUpdate(
@@ -93,7 +93,7 @@ module.exports = {
                 if (guild.totalsupply === 0) return await interaction.editReply({ content: `Sorry but you havn't set an initial total supply before, please use \`/supply set\` to set the initial amount.` });
 
                 // Get the Currency details from the interaction options
-                const amount = interaction.options.getInteger('amount');
+                const amount = interaction.options.getNumber('amount');
 
                 // Connect to MongoDB and update the Server's total supply for staking
                 await guildSchema.findOneAndUpdate(
