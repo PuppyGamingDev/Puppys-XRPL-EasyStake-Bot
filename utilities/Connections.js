@@ -58,14 +58,14 @@ const checkTrustline = async (amount, wallet, token) => {
     const response = await client.request({
         command: "account_lines",
         account: wallet,
-      });
-      client.disconnect();
-      if (response.status !== "success") return false
-      if (response.result.lines.length < 1) return false
-      for (const line of response.result.lines) {
-          if (line.currency === token.hex && line.limit - line.balance >= amount) return true
-      }
-      return false
+    });
+    client.disconnect();
+    if (response.status !== "success") return false
+    if (response.result.lines.length < 1) return false
+    for (const line of response.result.lines) {
+        if (line.currency === token.hex && line.limit - line.balance >= amount) return true
+    }
+    return false
 }
 
 module.exports = { getXUMM, getXRPClient, claim, checkTrustline };

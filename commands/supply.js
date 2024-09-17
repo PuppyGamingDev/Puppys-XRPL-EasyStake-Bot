@@ -68,7 +68,7 @@ module.exports = {
                 const guild = await guildSchema.findOne({ _id: interaction.guild.id });
 
                 // Check if a total has already been set and suggest the add command
-                if (guild.totalsupply > 0) return await interaction.editReply({ content: `Sorry but you have already set an initial total supply, please use \`/supply add\` to add to it.` });
+                if (guild?.totalsupply > 0) return await interaction.editReply({ content: `Sorry but you have already set an initial total supply, please use \`/supply add\` to add to it.` });
 
                 // Get the Currency details from the interaction options
                 const supply = interaction.options.getNumber('total');
@@ -90,7 +90,7 @@ module.exports = {
                 const guild = await guildSchema.findOne({ _id: interaction.guild.id });
 
                 // Check if a total has already been set and suggest the add command
-                if (guild.totalsupply === 0) return await interaction.editReply({ content: `Sorry but you havn't set an initial total supply before, please use \`/supply set\` to set the initial amount.` });
+                if (guild?.totalsupply === 0) return await interaction.editReply({ content: `Sorry but you havn't set an initial total supply before, please use \`/supply set\` to set the initial amount.` });
 
                 // Get the Currency details from the interaction options
                 const amount = interaction.options.getNumber('amount');

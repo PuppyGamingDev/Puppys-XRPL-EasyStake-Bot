@@ -1,5 +1,5 @@
-// Connectiong to MongoDB and return current connection if already exists.
 const mongoose = require('mongoose');
+const { logger } = require('./logger');
 mongoose.set('strictQuery', true);
 
 require('dotenv/config');
@@ -11,7 +11,7 @@ const mongoConnect = async () => {
 		return cached;
 	}
 
-	console.log('Creating a new Mongo connection');
+	logger.info('Creating a new Mongo connection');
 
 	let mongoConnResult = null;
 	try {
@@ -22,11 +22,11 @@ const mongoConnect = async () => {
 			});
 		});
 
-		console.log('Mongo connection Created successfully.');
+		logger.info('Mongo connection Created successfully.');
 	}
 	catch (error) {
-		console.log('Mongo connection Failed:');
-		console.error(error);
+		logger.error('Mongo connection Failed:');
+		logger.error(error);
 	}
 
 	return mongoConnResult;

@@ -5,6 +5,7 @@ const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
 require("dotenv/config");
 const mongoConnect = require("./utilities/mongo-connect");
 require('./utilities/Staking.js');
+const { logger } = require('./utilities/logger');
 
 // Declare needed Intents
 const client = new Client({
@@ -25,7 +26,7 @@ for (const file of commandFiles) {
 client.once(Events.ClientReady, async () => {
     // Initiate MongoDB connection first
     await mongoConnect();
-    console.log(`Puppy's EasyStake Bot is running`);
+    logger.info(`Puppy's EasyStake Bot is running`);
 });
 
 // Slash Command Handling
@@ -39,7 +40,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         try {
             await command.execute(interaction, client);
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
         }
     }
@@ -52,7 +53,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         try {
             await command.autocomplete(interaction, client);
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
         }
     }
