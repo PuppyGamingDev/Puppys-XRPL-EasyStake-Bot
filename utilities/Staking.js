@@ -10,7 +10,7 @@ const Users = new Map();
 let stakingLogger;
 
 // Set to run job every Midnight of server time
-const stakejob = schedule.scheduleJob('06 17 * * *', function() {
+const stakejob = schedule.scheduleJob('00 00 * * *', function() {
     const date = new Date().toISOString().split('T')[0];
     stakingLogger = createStakingLogger(date);
     stakingLogger.info(`Running Stake Snapshot`);
