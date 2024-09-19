@@ -55,17 +55,42 @@ const claim = async (address, amount, currency) => {
 
 const checkTrustline = async (amount, wallet, token) => {
     const client = await getXRPClient();
-    const response = await client.request({
+    var request = {
         command: "account_lines",
         account: wallet,
-    });
-    client.disconnect();
+        limit: 100
+    }
+    var response = await client.request(request);
     if (response.status !== "success") return false
     if (response.result.lines.length < 1) return false
-    for (const line of response.result.lines) {
-        if (line.currency === token.hex && line.limit - line.balance >= amount) return true
+    var allLines = [...response.result.lines];
+    var marker = response.result.marker;
+
+    while (marker) {
+        request.marker = marker;
+        response = await client.request(request);
+        allLines = [...allLines, ...response.result.lines];
+        marker = response.result.marker;
+    }
+    client.disconnect();
+    for (const line of allLines) {
+        if (line.currency === token.hex) return true
     }
     return false
 }
 
-module.exports = { getXUMM, getXRPClient, claim, checkTrustline };
+const isValidTransaction = async (tx) => {
+    const client = await getXRPClient();
+    const response = await client.request({
+        id: 1,
+        command: "tx",
+        transaction: tx,
+        binary: false,
+        ledger_index:'current'
+    });
+    await client.disconnect();
+    if (response.result?.meta?.TransactionResult === "tesSUCCESS") return true;
+    else return null;
+};
+
+module.exports = { getXUMM, getXRPClient, claim, checkTrustline, isValidTransaction };

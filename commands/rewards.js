@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const userSchema = require('../schemas/userSchema');
 const guildSchema = require('../schemas/guildSchema');
 const mongoConnect = require('../utilities/mongo-connect');
-const { claim, checkTrustline } = require('../utilities/Connections');
+const { claim, checkTrustline, isValidTransaction } = require('../utilities/Connections');
 
 // Cooldown manager to mitigate spam claiming
 const cooldowns = new Map();
@@ -50,13 +50,14 @@ module.exports = {
                 else {
                     myRewards = guild.rewards[interaction.user.id];
                 }
+                let trimmedRewards = Math.floor(myRewards * 1e6) / 1e6;
 
                 // Response Embed for the user containing their rewards information
                 const currency = guild.currency.name !== undefined ? guild.currency.name : 'Undefined Currency';
                 const embed = new EmbedBuilder()
                     .setTitle(`Your Rewards`)
                     .setColor(Colors.Gold)
-                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.`)
+                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.\nYou can currently claim **${trimmedRewards.toLocaleString(undefined, { minimumFractionDigits: 6 })}** of *${currency}*\n*The current minimum claimable amount is multiples of 0.000001 (trailing amounts will be kept in your rewards)*`)
                     .setFooter({ text: `Puppy's XRPL EasyStake Bot` })
 
                 await interaction.editReply({ embeds: [embed] });
@@ -90,10 +91,18 @@ module.exports = {
                     await interaction.editReply({ content: `Sorry but the project hasn't set up their token details yet.` });
                     return;
                 }
+
+                // reduce myRewards to 6 decimal places without rounding up or down
+                let trimmedRewards = Math.floor(myRewards * 1e6) / 1e6;
+                if (trimmedRewards < 0.000001) {
+                    await interaction.editReply({ content: `You need a minimum of 0.000001 ${guild.currency.name} to claim.` });
+                    return;
+                }
+
                 // Check trustline
                 const token = { hex: guild.currency.code }
-                const hasLine = await checkTrustline(myRewards, user.wallet, token);
-                if (!hasLine) return await interaction.editReply({ content: `Sorry but you dont seem to have a trustline set`});
+                // const hasLine = await checkTrustline(myRewards, user.wallet, token);
+                // if (!hasLine) return await interaction.editReply({ content: `Sorry but you dont seem to have a trustline set`});
                 
                 // Check if user is on cooldown to prevent spam claiming (2 minute cooldown)
                 const timenow = Math.floor(Date.now() / 1000);
@@ -110,10 +119,16 @@ module.exports = {
                 // Attempt to claim rewards
                 try {
                     // DO transaction from Connections.js
-                    const txhash = await claim(user.wallet, myRewards, guild.currency);
+                    const txhash = await claim(user.wallet, trimmedRewards, guild.currency);
 
                     // Handle if transaction failed
                     if (!txhash || txhash === undefined) {
+                        await interaction.editReply({ content: `There was an error claiming your rewards. Make sure you have a Trustline set and if continues, please contact a member of the team` });
+                        return;
+                    }
+
+                    const isValid = await isValidTransaction(txhash);
+                    if (!isValid) {
                         await interaction.editReply({ content: `There was an error claiming your rewards. Make sure you have a Trustline set and if continues, please contact a member of the team` });
                         return;
                     }
@@ -123,7 +138,7 @@ module.exports = {
                     const path = `rewards.${interaction.user.id}`
                     await guildSchema.findOneAndUpdate(
                         { _id: interaction.guild.id },
-                        { [path]: 0 },
+                        { [path]: myRewards - trimmedRewards },
                         { upsert: true }
                     )
 
