@@ -92,7 +92,8 @@ module.exports = {
                 }
                 // Check trustline
                 const token = { hex: guild.currency.code }
-                if (!await checkTrustline(myRewards, user.wallet, token)) return await interaction.editReply({ content: `Sorry but you dont seem to have a trustline set`});
+                const hasLine = await checkTrustline(myRewards, user.wallet, token);
+                if (!hasLine) return await interaction.editReply({ content: `Sorry but you dont seem to have a trustline set`});
                 
                 // Check if user is on cooldown to prevent spam claiming (2 minute cooldown)
                 const timenow = Math.floor(Date.now() / 1000);
