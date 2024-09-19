@@ -56,7 +56,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle(`Your Rewards`)
                     .setColor(Colors.Gold)
-                    .setDescription(`You have **${myRewards.toLocaleString()}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.`)
+                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.`)
                     .setFooter({ text: `Puppy's XRPL EasyStake Bot` })
 
                 await interaction.editReply({ embeds: [embed] });

@@ -51,10 +51,10 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setTitle('Staking Supply Details')
                     .addFields(
-                        { name: `Total Supply`, value: guild.totalsupply.toLocaleString() },
-                        { name: `Currently Supply`, value: guild.currentsupply.toLocaleString() },
-                        { name: `Awaiting Claim`, value: claimable.toLocaleString() },
-                        { name: `Claimed`, value: claimed.toLocaleString() }
+                        { name: `Total Supply`, value: guild.totalsupply.toLocaleString(undefined, { minimumFractionDigits: 12 }) },
+                        { name: `Currently Supply`, value: guild.currentsupply.toLocaleString(undefined, { minimumFractionDigits: 12 }) },
+                        { name: `Awaiting Claim`, value: claimable.toLocaleString(undefined, { minimumFractionDigits: 12 }) },
+                        { name: `Claimed`, value: claimed.toLocaleString(undefined, { minimumFractionDigits: 12 }) }
                     )
                 await interaction.editReply({ embeds: [embed] });
                 return;
@@ -79,7 +79,7 @@ module.exports = {
                     { totalsupply: supply, currentsupply: supply },
                     { upsert: true }
                 )
-                await interaction.editReply({ content: `Your total Staking Supply has been set to **${supply.toLocaleString()}**\nTo increase reward supply, please use \`/supply add\`` });
+                await interaction.editReply({ content: `Your total Staking Supply has been set to **${supply.toLocaleString(undefined, { minimumFractionDigits: 12 })}**\nTo increase reward supply, please use \`/supply add\`` });
                 return;
             }
 
@@ -103,7 +103,7 @@ module.exports = {
                 )
 
                 const newAmount = guild.totalsupply + amount;
-                await interaction.editReply({ content: `Your new total Staking Supply has been set to **${newAmount.toLocaleString()}**\n` });
+                await interaction.editReply({ content: `Your new total Staking Supply has been set to **${newAmount.toLocaleString(undefined, { minimumFractionDigits: 12 })}**\n` });
                 return;
             }
 
