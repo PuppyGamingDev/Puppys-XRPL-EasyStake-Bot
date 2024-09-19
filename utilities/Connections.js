@@ -42,7 +42,7 @@ const claim = async (address, amount, currency) => {
         xrpl.xrpToDrops(amount.toFixed(6)) :
         {
             "currency": currency.code,
-            "value": amount.toFixed(6).toString(),
+            "value": amount.toString(),
             "issuer": currency.issuer
         }
     // Sign & submit the transaction

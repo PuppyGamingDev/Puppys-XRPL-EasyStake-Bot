@@ -50,14 +50,14 @@ module.exports = {
                 else {
                     myRewards = guild.rewards[interaction.user.id];
                 }
-                let trimmedRewards = Math.floor(myRewards * 1e6) / 1e6;
+                let trimmedRewards = Math.floor(myRewards * 1e12) / 1e12;
 
                 // Response Embed for the user containing their rewards information
                 const currency = guild.currency.name !== undefined ? guild.currency.name : 'Undefined Currency';
                 const embed = new EmbedBuilder()
                     .setTitle(`Your Rewards`)
                     .setColor(Colors.Gold)
-                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.\nYou can currently claim **${trimmedRewards.toLocaleString(undefined, { minimumFractionDigits: 6 })}** of *${currency}*\n*The current minimum claimable amount is multiples of 0.000001 (trailing amounts will be kept in your rewards)*`)
+                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.\nYou can currently claim **${trimmedRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}*\n*Anything extra will be kept in your rewards for future claims.*`)
                     .setFooter({ text: `Puppy's XRPL EasyStake Bot` })
 
                 await interaction.editReply({ embeds: [embed] });
@@ -92,10 +92,10 @@ module.exports = {
                     return;
                 }
 
-                // reduce myRewards to 6 decimal places without rounding up or down
-                let trimmedRewards = Math.floor(myRewards * 1e6) / 1e6;
-                if (trimmedRewards < 0.000001) {
-                    await interaction.editReply({ content: `You need a minimum of 0.000001 ${guild.currency.name} to claim.` });
+                // reduce myRewards to 12 decimal places without rounding up or down
+                let trimmedRewards = Math.floor(myRewards * 1e12) / 1e12;
+                if (trimmedRewards < 0.000000000001) {
+                    await interaction.editReply({ content: `You need a minimum of 0.000000000001 ${guild.currency.name} to claim.` });
                     return;
                 }
 
