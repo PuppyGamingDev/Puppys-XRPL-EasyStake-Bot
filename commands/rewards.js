@@ -143,7 +143,7 @@ module.exports = {
                     )
 
                     // Respond to user with successful claim
-                    await interaction.editReply({ content: `You have successfully claimed your rewards.\nYou can view your transaction here: https://xrpscan.com/tx/${txhash}` });
+                    await interaction.editReply({ content: `You have successfully claimed your rewards.\nYou can view your transaction here: https://xrplexplorer.com/explorer/${txhash}` });
                 } catch (error) {
                     // Uh Oh, something went wrong
                     console.log(error)
