@@ -105,26 +105,39 @@ module.exports = {
                 // Connect to MongoDB and get the Project's collections
                 await mongoConnect();
                 const guild = await guildSchema.findOne({ _id: interaction.guild.id });
-                var description = ``;
 
-                // Iterate over the collections and add them to the description with details
-                for (const collection of guild.collections) {
-                    description += (`**${collection.name}**\nIssuer: ${collection.issuer}\nTaxon: ${collection.taxon}\nReward: ${collection.pernft} *per NFT per Day*\n------------------\n`);
-                }
-                // If no collections found
-                if (description === ``) {
+                if (!guild.collections || guild.collections.length === 0) {
                     await interaction.editReply({ content: `You have no collections.` });
                     return;
                 }
 
+                var embeds = [];
                 // Create the Embed and send it to the user
-                const embed = new EmbedBuilder()
+                var embed = new EmbedBuilder()
                     .setTitle(`Your Project's Collections`)
-                    .setDescription(description)
                     .setColor(Colors.Green)
                     .setFooter({ text: `Puppy's XRPL EasyStake Bot` });
 
-                await interaction.editReply({ embeds: [embed] });
+                var description = ``;
+
+                // Iterate over the collections and add them to the description with details
+                for (const collection of guild.collections) {
+                    var newString= (`**${collection.name}**\nIssuer: ${collection.issuer}\nTaxon: ${collection.taxon}\nReward: ${collection.pernft} *per NFT per Day*\n------------------\n`);
+                    if (description.length + newString.length > 2000) {
+                        embeds.push(embed.setDescription(description));
+                        embed = new EmbedBuilder()
+                            .setTitle(`Your Project's Collections`)
+                            .setColor(Colors.Green)
+                            .setFooter({ text: `Puppy's XRPL EasyStake Bot` });
+                        description = newString;
+                    } else {
+                        description += newString;
+                    }
+                }
+                embeds.push(embed.setDescription(description));
+
+            
+                await interaction.editReply({ embeds: embeds });
                 return;
 
             }
