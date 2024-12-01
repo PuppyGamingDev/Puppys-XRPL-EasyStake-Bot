@@ -50,14 +50,13 @@ module.exports = {
                 else {
                     myRewards = guild.rewards[interaction.user.id];
                 }
-                let trimmedRewards = Math.floor(myRewards * 1e12) / 1e12;
 
                 // Response Embed for the user containing their rewards information
                 const currency = guild.currency.name !== undefined ? guild.currency.name : 'Undefined Currency';
                 const embed = new EmbedBuilder()
                     .setTitle(`Your Rewards`)
                     .setColor(Colors.Gold)
-                    .setDescription(`You have **${myRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.\nYou can currently claim **${trimmedRewards.toLocaleString(undefined, { minimumFractionDigits: 12 })}** of *${currency}*\n*Anything extra will be kept in your rewards for future claims.*`)
+                    .setDescription(`You have **${myRewards.toLocaleString()}** of *${currency}* to claim.\nYou can claim your rewards by using \`/rewards claim\` or continue to build your rewards.`)
                     .setFooter({ text: `Puppy's XRPL EasyStake Bot` })
 
                 await interaction.editReply({ embeds: [embed] });
@@ -92,13 +91,6 @@ module.exports = {
                     return;
                 }
 
-                // reduce myRewards to 12 decimal places without rounding up or down
-                let trimmedRewards = Math.floor(myRewards * 1e12) / 1e12;
-                if (trimmedRewards < 0.000000000001) {
-                    await interaction.editReply({ content: `You need a minimum of 0.000000000001 ${guild.currency.name} to claim.` });
-                    return;
-                }
-
                 // Check trustline
                 const token = { hex: guild.currency.code }
                 // const hasLine = await checkTrustline(myRewards, user.wallet, token);
@@ -119,7 +111,7 @@ module.exports = {
                 // Attempt to claim rewards
                 try {
                     // DO transaction from Connections.js
-                    const txhash = await claim(user.wallet, trimmedRewards, guild.currency);
+                    const txhash = await claim(user.wallet, myRewards, guild.currency);
 
                     // Handle if transaction failed
                     if (!txhash || txhash === undefined) {
@@ -138,7 +130,7 @@ module.exports = {
                     const path = `rewards.${interaction.user.id}`
                     await guildSchema.findOneAndUpdate(
                         { _id: interaction.guild.id },
-                        { [path]: myRewards - trimmedRewards },
+                        { [path]: 0 },
                         { upsert: true }
                     )
 

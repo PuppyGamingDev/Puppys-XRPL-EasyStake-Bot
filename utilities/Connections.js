@@ -39,10 +39,10 @@ const claim = async (address, amount, currency) => {
     })
     // Add amount field based on currency type (XRP or XRPL Token)
     prepared["Amount"] = currency.name === "XRP" ?
-        xrpl.xrpToDrops(amount.toFixed(6)) :
+        xrpl.xrpToDrops(amount) :
         {
             "currency": currency.code,
-            "value": amount.toString(),
+            "value": amount.toPrecision(15),
             "issuer": currency.issuer
         }
     // Sign & submit the transaction
