@@ -119,11 +119,11 @@ module.exports = {
                         return;
                     }
 
-                    const isValid = await isValidTransaction(txhash);
-                    if (!isValid) {
-                        await interaction.editReply({ content: `There was an error claiming your rewards. Make sure you have a Trustline set and if continues, please contact a member of the team` });
-                        return;
-                    }
+                    // const isValid = await isValidTransaction(txhash);
+                    // if (!isValid) {
+                    //     await interaction.editReply({ content: `There was an error claiming your rewards. Make sure you have a Trustline set and if continues, please contact a member of the team` });
+                    //     return;
+                    // }
 
                     // Update user's rewards to 0 after successful claim
                     guild.rewards[interaction.user.id] = 0;
