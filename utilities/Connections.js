@@ -50,7 +50,7 @@ const claim = async (address, amount, currency) => {
     const tx = await xrplclient.submitAndWait(signed.tx_blob)
     // Disconnect from XRPL Client and return the transaction hash
     await xrplclient.disconnect()
-    if (tx.response.meta?.TransactionResult === "tesSUCCESS") return signed.hash
+    if (tx.result.meta?.TransactionResult === "tesSUCCESS") return signed.hash
     return null;
 }
 
