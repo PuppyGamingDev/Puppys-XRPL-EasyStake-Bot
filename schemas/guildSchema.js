@@ -3,33 +3,33 @@ const mongoose = require('mongoose');
 
 const guildSchema = new mongoose.Schema({
     _id: {
-        type: mongoose.SchemaTypes.String,
+        type: String,
         required: true,
     },
     collections: {
-        type: mongoose.SchemaTypes.Array,
+        type: Array,
     },
     token: {
-        type: mongoose.SchemaTypes.Mixed,
+        type: mongoose.Schema.Types.Mixed,
     },
     rewards: {
-        type: mongoose.SchemaTypes.Mixed,
+        type: mongoose.Schema.Types.Mixed,
         required: true,
         default: {},
     },
     currency: {
-        type: mongoose.SchemaTypes.Mixed,
+        type: mongoose.Schema.Types.Mixed,
     },
     modifiers: {
-        type: mongoose.SchemaTypes.Mixed,
+        type: mongoose.Schema.Types.Mixed,
     },
     totalsupply: {
-        type: mongoose.SchemaTypes.Number,
+        type: Number,
         required: true,
         default: 0,
     },
     currentsupply: {
-        type: mongoose.SchemaTypes.Number,
+        type: Number,
         required: true,
         default: 0,
     }

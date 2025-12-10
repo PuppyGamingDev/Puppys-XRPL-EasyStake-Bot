@@ -25,8 +25,14 @@ for (const file of commandFiles) {
 // Runs when bot logs in
 client.once(Events.ClientReady, async () => {
     // Initiate MongoDB connection first
-    await mongoConnect();
-    logger.info(`Puppy's EasyStake Bot is running`);
+    try {
+        await mongoConnect();
+        logger.info(`Puppy's EasyStake Bot is running`);
+    } catch (error) {
+        logger.error('Failed to connect to MongoDB. Bot will continue but database features may not work.');
+        logger.error('Please check your MONGOURI connection string and MongoDB Atlas settings.');
+        logger.error(error.message);
+    }
 });
 
 // Slash Command Handling

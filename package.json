@@ -17,14 +17,14 @@
   },
   "homepage": "https://github.com/PuppyGamingDev/Puppys-XRPL-EasyStake-Bot#readme",
   "dependencies": {
-    "@discordjs/rest": "^2.0.1",
-    "axios": "^1.4.0",
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1",
-    "mongoose": "^7.4.5",
+    "@discordjs/rest": "^2.2.0",
+    "axios": "^1.7.0",
+    "discord.js": "^14.15.0",
+    "dotenv": "^16.4.0",
+    "mongoose": "^9.0.0",
     "node-schedule": "^2.1.1",
-    "winston": "^3.14.2",
-    "xrpl": "^2.11.0",
-    "xumm-sdk": "^1.8.7"
+    "winston": "^3.15.0",
+    "xrpl": "^4.2.5",
+    "xumm-sdk": "^1.9.0"
   }
 }

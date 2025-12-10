@@ -22,7 +22,7 @@ const getXRPClient = async () => {
 const claim = async (address, amount, currency) => {
     // Connect with XRPL Client & get rewards wallet from Seed
     const xrplclient = await getXRPClient()
-    wallet = xrpl.Wallet.fromSeed(process.env.SEED)
+    const wallet = xrpl.Wallet.fromSeed(process.env.SEED)
 
     // Create the transaction data
     const prepared = await xrplclient.autofill({
